@@ -1,32 +1,36 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .serializers import HotelSerializer
+from .services import HotelRoomService
 
 # Create your views here.
 
-class HotelViewSet(viewsets.ViewSet):
+class HotelRoomViewSet(viewsets.ViewSet):
     """
-    API ViewSet для работы с отелями
+    Ручки для работы с номерами отеля
     """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.service = HotelRoomService()
+
     def list(self, request):
-        hotels = [
-            {
-                'id': 1,
-                'name': 'Гранд Отель',
-                'rating': 4.5,
-                'address': 'ул. Ленина, 10'
-            },
-            {
-                'id': 2,
-                'name': 'Морской Бриз',
-                'rating': 4.2,
-                'address': 'пр. Мира, 25'
-            }
-        ]
-        
-        serializer = HotelSerializer(hotels, many=True)
-        return Response({
-            'status': 'success',
-            'data': serializer.data
-        })
+        """Получить список номеров отеля"""
+        sort_by = request.query_params.get('sort_by', 'created_at')
+        order = request.query_params.get('order', 'asc')
+
+        return self.service.get_room_list(sort_by, order)
+
+    def retrieve(self, request, pk=1):
+        return self.service.get_room(pk)
+
+    def create(self, request):
+        """Добавить номер отеля"""
+        return self.service.create_room(request.data)
+
+    def destroy(self, request, pk=None):
+        """Удалить номер отеля"""
+        return self.service.delete_room(pk)
+
+
+
+

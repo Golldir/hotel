@@ -1,7 +1,7 @@
 from rest_framework import serializers
+from .models import HotelRoom
 
-class HotelSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField()
-    rating = serializers.FloatField()
-    address = serializers.CharField() 
+class HotelRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotelRoom
+        fields = ['id', 'description', 'price_per_night', 'created_at'] 
