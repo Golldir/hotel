@@ -114,8 +114,9 @@ class TestRoomBookingService:
         
         # Проверяем результат
         assert response.status_code == status.HTTP_200_OK
+        wtf = response.data['data']['room_id']
         assert response.data['data']['id'] == 1
-        assert response.data['data']['room_id']['id'] == 1
+        assert response.data['data']['room_id'] == 3  # room_id теперь просто целое число
         assert response.data['data']['start_date'] == '2023-01-01'
         assert response.data['data']['end_date'] == '2023-01-05'
         
@@ -141,11 +142,11 @@ class TestRoomBookingService:
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 2
         assert response.data[0]['id'] == 1
-        assert response.data[0]['room_id']['id'] == 1
+        assert response.data[0]['room_id'] == 1  # room_id теперь просто целое число
         assert response.data[0]['start_date'] == '2023-01-01'
         assert response.data[0]['end_date'] == '2023-01-05'
         assert response.data[1]['id'] == 2
-        assert response.data[1]['room_id']['id'] == 2
+        assert response.data[1]['room_id'] == 2  # room_id теперь просто целое число
         assert response.data[1]['start_date'] == '2023-02-01'
         assert response.data[1]['end_date'] == '2023-02-05'
         

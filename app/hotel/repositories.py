@@ -1,5 +1,5 @@
 from typing import List, Optional
-from .models import HotelRoom, RoomBooking
+from hotel.models import HotelRoom, RoomBooking
 from rest_framework.decorators import action
 
 class HotelRoomRepository:
@@ -8,16 +8,10 @@ class HotelRoomRepository:
     """
     def get_room(self, room_id: int) -> HotelRoom:
         """Получить все номера с сортировкой"""
-        return HotelRoom.objects.filter(pk=room_id)
+        return HotelRoom.objects.filter(id=room_id)
 
     def get_all_rooms(self, sort_expression: str) -> List[HotelRoom]:
         """Получить все номера с сортировкой"""
-        # valid_sort_fields = {'price_per_night', 'created_at'}
-        # if sort_by not in valid_sort_fields:
-        #     sort_by = 'created_at'
-        #
-        # order_prefix = '' if order == 'asc' else '-'
-        # return HotelRoom.objects.all().order_by(f'{order_prefix}{sort_by}')
         return HotelRoom.objects.all().order_by(f'{sort_expression}')
 
     def create_room(self, description: str, price_per_night: float) -> HotelRoom:

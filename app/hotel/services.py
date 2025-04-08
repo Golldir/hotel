@@ -1,3 +1,4 @@
+from http.client import responses
 from typing import Dict, Any, List
 
 from rest_framework import status
@@ -25,7 +26,7 @@ class HotelRoomService:
                 'message': 'Номер не найден'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = HotelRoomSerializer(room)
+        serializer = HotelRoomSerializer(room, many=True)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK
@@ -53,6 +54,7 @@ class HotelRoomService:
             data: словарь с данными номера (description, price_per_night)
         """
         serializer = HotelRoomSerializer(data=data)
+
         if serializer.is_valid():
             result = self.room_repository.create_room(
                 description=serializer.validated_data['description'],
@@ -90,7 +92,6 @@ class RoomBookingService:
     """
     Сервисный слой для работы с бронированиями номеров
     """
-
     def __init__(self):
         self.booking_repository = RoomBookingRepository()
         self.room_repository = HotelRoomRepository()

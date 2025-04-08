@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+  title: Hotel API
+  version: 1.0.0
+  description: Hotel API description
+paths:
+  /api/hotel/bookings/:
+    get:
+      operationId: bookings_retrieve
+      description: Получить список всех бронирований номера
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: bookings_create
+      description: Создать новое бронирование
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /api/hotel/bookings/{id}/:
+    delete:
+      operationId: bookings_destroy
+      description: Удалить бронирование
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/hotel/bookings/by_id/{booking_id}/:
+    get:
+      operationId: bookings_by_id_retrieve
+      description: Получить бронирование по id
+      parameters:
+      - in: path
+        name: booking_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/hotel/bookings/by_room/{room_id}/:
+    get:
+      operationId: bookings_by_room_retrieve
+      description: Получить список всех бронирований по room_id
+      parameters:
+      - in: path
+        name: room_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/hotel/rooms/:
+    get:
+      operationId: rooms_retrieve
+      description: Получить список номеров отеля
+      tags:
+      - rooms
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: rooms_create
+      description: Добавить номер отеля
+      tags:
+      - rooms
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /api/hotel/rooms/{id}/:
+    get:
+      operationId: rooms_retrieve_2
+      description: Ручки для работы с номерами отеля
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - rooms
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: rooms_destroy
+      description: Удалить номер отеля
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - rooms
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

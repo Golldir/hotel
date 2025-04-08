@@ -6,6 +6,8 @@ router = DefaultRouter()
 router.register(r'rooms', HotelRoomViewSet, basename='hotel_rooms')
 router.register(r'bookings', RoomBookingViewSet, basename='hotel_bookings')
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
 ] 

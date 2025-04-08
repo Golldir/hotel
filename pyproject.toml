@@ -13,7 +13,9 @@ dependencies = [
     "pytest (>=8.3.5,<9.0.0)",
     "pytest-django (>=4.11.1,<5.0.0)",
     "pytest-cov (>=6.1.0,<7.0.0)",
-    "pytest-mock (>=3.14.0,<4.0.0)"
+    "pytest-mock (>=3.14.0,<4.0.0)",
+    "drf-yasg (>=1.21.10,<2.0.0)",
+    "drf-spectacular (>=0.28.0,<0.29.0)"
 ]
 
 
