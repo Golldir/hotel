@@ -1,76 +1,101 @@
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
 
-from hotel.serializers import RoomBookingSerializer, HotelRoomSerializer
-from .services import HotelRoomService, RoomBookingService
+from .serializers import BookingSerializer, RoomSerializer
+from .services import RoomService, BookingService
+
 
 # Create your views here.
 
 @extend_schema(
     tags=["Номера отеля"]
+
 )
-class HotelRoomViewSet(viewsets.ViewSet):
+class RoomViewSet(viewsets.ViewSet):
     """
     Ручки для работы с номерами отеля
     """
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.room_service = HotelRoomService()
 
+    def __init__(self, **kwargs):
+        self.room_service = RoomService()
+        super().__init__(**kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='sort_by', description='Сортировать по колонке (price_per_night, created_at)',
+                             required=False, type=str),
+            OpenApiParameter(name='order', description='Направление сортировки (asc, desc)', required=False, type=str)
+        ]
+    )
     def list(self, request):
         """Получить список номеров отеля"""
-        return self.room_service.get_all_rooms(request.data)
+        return self.room_service.get_rooms(request.query_params)
 
-    def retrieve(self, request, pk=1):
-        return self.room_service.get_room(pk)
-
-    @extend_schema(request=HotelRoomSerializer, methods=["POST"])
+    @extend_schema(
+        request=RoomSerializer,
+        methods=["POST"],
+        examples=[
+            OpenApiExample(
+                name="Пример бронирования",
+                value={
+                    "room_id": 15,
+                    "description": "Люксовые апартаменты",
+                    "price_per_night": "150.00"
+                },
+                request_only=True
+            )
+        ]
+    )
     def create(self, request):
         """Добавить номер отеля"""
         return self.room_service.create_room(request.data)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk):
         """Удалить номер отеля"""
         return self.room_service.delete_room(pk)
+
 
 @extend_schema(
     tags=['Бронирование номеров']
 )
-class RoomBookingViewSet(viewsets.ViewSet):
+class BookingViewSet(viewsets.ViewSet):
     """
     Ручки для работы с бронированиями номеров
     """
 
     def __init__(self, **kwargs):
+        self.booking_service = BookingService()
         super().__init__(**kwargs)
-        self.booking_service = RoomBookingService()
 
-    @action(detail=False, methods=['get'], url_path='by_id/(?P<booking_id>[^/.]+)')
-    def get_by_id(self, request, booking_id: int) -> Response:
-        """Получить бронирование по id"""
-        return self.booking_service.get_booking_by_id(booking_id)
-
-    @action(detail=False, methods=['get'], url_path='by_room/(?P<room_id>[^/.]+)')
-    def get_by_room(self, request, room_id: int) -> Response:
-        """Получить список всех бронирований по room_id"""
-        return self.booking_service.get_bookings_by_room(room_id)
-
+    @extend_schema(
+        request=RoomSerializer,
+        parameters=[
+            OpenApiParameter(name='room_id', description='ID номера отеля', required=False, type=str),
+        ]
+    )
     def list(self, request):
-        """Получить список всех бронирований номера"""
-        return self.booking_service.get_all_bookings()
+        """Получить список всех бронирований номера по room_id"""
+        return self.booking_service.get_bookings_by_room_id(request.query_params)
 
-    @extend_schema(request=RoomBookingSerializer, methods=["POST"])
-    def create(self, request, *args, **kwargs):
+    @extend_schema(
+        request=BookingSerializer,
+        methods=["POST"],
+        examples=[
+            OpenApiExample(
+                name="Пример бронирования",
+                value={
+                    "room_id": 15,
+                    "start_date": "2025-04-12",
+                    "end_date": "2025-04-15"
+                },
+                request_only=True
+            )
+        ]
+    )
+    def create(self, request):
         """Создать новое бронирование"""
         return self.booking_service.create_booking(request.data)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk):
         """Удалить бронирование"""
         return self.booking_service.delete_booking(pk)
-
-
-
-

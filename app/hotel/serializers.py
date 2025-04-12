@@ -1,13 +1,19 @@
 from rest_framework import serializers
-from .models import HotelRoom, RoomBooking
+from .models import Room, Booking
 
-class HotelRoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HotelRoom
-        fields = ['id', 'description', 'price_per_night', 'created_at']
 
-class RoomBookingSerializer(serializers.ModelSerializer):
-    
+class RoomSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RoomBooking
-        fields = ['id', 'room_id', 'start_date', 'end_date', 'created_at']
+        model = Room
+        fields = '__all__'
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    room_id = serializers.PrimaryKeyRelatedField(queryset=Room.objects.all())
+    start_date = serializers.DateField(format='%Y-%m-%d')
+    end_date = serializers.DateField(format='%Y-%m-%d')
+
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
