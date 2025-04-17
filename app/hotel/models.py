@@ -1,8 +1,21 @@
 from django.db import models
 
+class Hotel(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['id']
 
 class Room(models.Model):
-    room_id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
+    room_number = models.IntegerField()
+    hotel_id = models.ForeignKey(
+        Hotel,
+        on_delete=models.CASCADE,
+        related_name='rooms',
+        db_column='hotel_id',
+    )
     description = models.TextField()
     price_per_night = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateField(auto_now_add=True)
@@ -12,7 +25,7 @@ class Room(models.Model):
 
 
 class Booking(models.Model):
-    booking_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     room_id = models.ForeignKey(
         Room,
         on_delete=models.CASCADE,

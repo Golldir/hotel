@@ -1,126 +1,43 @@
-from hotel.models import HotelRoom, RoomBooking
+from hotel.models import Hotel
 
-mock_room_repository_data = {
-    'get_room': [
-        HotelRoom(
-            id=1,
-            description='Тестовый номер 1',
-            price_per_night=1500.00
-        )
-    ],
+ROOM_DATA = {
     'get_all_rooms': [
-        HotelRoom(
-            id=1,
-            description='Тестовый номер 1',
-            price_per_night=1500.00,
-            created_at='2025-03-31 13:14:43.177140 +00:00'
-        ),
-        HotelRoom(
-            id=2,
-            description='Тестовый номер 2',
-            price_per_night=2000.00,
-            created_at='2025-03-31 13:14:43.177140 +00:00'
-        )
+        {
+            'id': 1,
+            'room_number': 101,
+            'hotel_id': 1,
+            'description': 'Стандартный номер',
+            'price_per_night': '150.00',
+            'created_at': '2024-04-16'
+        },
+        {
+            'id': 2,
+            'room_number': 102,
+            'hotel_id': 1,
+            'description': 'Люкс',
+            'price_per_night': '300.00',
+            'created_at': '2024-04-16'
+        }
     ],
-    'create_room':
-        HotelRoom(
-            id=1,
-            description='Тестовый номер 1',
-            price_per_night=1500.00,
-            created_at='2025-03-31 13:14:43.177140 +00:00'
-        ),
+    'create_room': {
+        'id': 1,
+        'room_number': 101,
+        'hotel_id': Hotel(id=1),
+        'description': 'Стандартный номер',
+        'price_per_night': '150.00',
+        'created_at': '2024-04-16'
+    },
     'delete_room': 1
 }
 
-mock_booking_repository_data = {
-    'get_booking_by_id': 
-        RoomBooking(
-            id=1,
-            room_id=HotelRoom(
-                id=1,
-                description='Тестовый номер 1',
-                price_per_night=1500.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        )
-    ,
-    'get_bookings_by_room': [
-        RoomBooking(
-            id=1,
-            room_id=HotelRoom(
-                id=1,
-                description='Тестовый номер 1',
-                price_per_night=1500.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        ),
-        RoomBooking(
-            id=2,
-            room_id=HotelRoom(
-                id=1,
-                description='Тестовый номер 2',
-                price_per_night=2000.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        )
-    ],
-    'get_all_bookings': [
-        RoomBooking(
-            id=1,
-            room_id=HotelRoom(
-                id=1,
-                description='Тестовый номер 1',
-                price_per_night=1500.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        ),
-        RoomBooking(
-            id=2,
-            room_id=HotelRoom(
-                id=1,
-                description='Тестовый номер 2',
-                price_per_night=2000.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        ),
-        RoomBooking(
-            id=3,
-            room_id=HotelRoom(
-                id=2,
-                description='Тестовый номер 2',
-                price_per_night=2000.00,
-                created_at='2025-03-31 13:14:43.177140 +00:00'
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        ),
-    ],
-    'create_booking':
-        RoomBooking(
-            id=5,
-            room_id=HotelRoom(
-                id=2
-            ),
-            start_date='2023-01-01',
-            end_date='2023-01-05',
-            created_at='2023-01-01T00:00:00Z'
-        )
-    ,
-    'delete_booking': 1
+# Константы для тестовых данных
+TEST_ROOM_DATA = {
+    'hotel_id': 1,
+    'room_number': 101,
+    'description': 'Стандартный номер',
+    'price_per_night': '150.00'
+}
+
+TEST_ROOM_DATA_INVALID = {
+    'invalid': 'data'
 }
