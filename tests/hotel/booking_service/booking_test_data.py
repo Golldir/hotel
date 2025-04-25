@@ -1,6 +1,3 @@
-from datetime import datetime, timedelta
-from hotel.models import Room, Booking
-
 BOOKING_DATA = {
     'get_all_bookings': [
         {

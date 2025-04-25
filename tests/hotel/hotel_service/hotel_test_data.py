@@ -1,5 +1,3 @@
-from hotel.models import Hotel
-
 HOTEL_DATA = {
     'get_all_hotels': [
         {
