@@ -12,5 +12,3 @@ RUN poetry install --no-root
 # Копируем код приложения
 COPY app /app/
 
-CMD poetry run python manage.py makemigrations
-CMD poetry run python manage.py migrate
