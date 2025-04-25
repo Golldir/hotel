@@ -1,0 +1,32 @@
+# Python
+.venv
+__pycache__/
+*/__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.ruff_cache/
+.app/hotel/migrations/
+
+# IDE
+.idea/
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+.docker/
+docker-compose*.yml
+Dockerfile*
+
+# Logs
+*.log
+
+# Tests
+tests/
+
+# Documentation
+README.md

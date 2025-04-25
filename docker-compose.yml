@@ -1,12 +1,23 @@
 name: hotel
 
 services:
+  web:
+    build:
+      context: .
+    container_name: web
+    command: poetry run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers=4
+    ports:
+      - "8000:8000"
+#    depends_on:
+#      - db
+    env_file:
+      - .env.prod
+
   db:
     image: postgres:16
     container_name: db
     restart: always
     volumes:
-#      - ./initdb/dump.sql:/docker-entrypoint-initdb.d/tables.sql:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
@@ -17,91 +28,13 @@ services:
     ports:
       - "5432:5432"
 
-#  fastapi:
-#    &app
-#    container_name: fastapi
-#    build:
-#      context: ./backend
-#    restart: always
-#    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 8000 --workers 4 --reload
-#    ports:
-#      - '8000:8000'
-#    depends_on:
-#      - db
-#    volumes:
-#      - ./media:/backend/media
-#      - ./media:/media
-#
-#  taskiq-worker:
-#
-#    <<: *app
-#    container_name: taskiq-worker
-#    ports: [ ]
-#    command: [ taskiq, worker, app.background_tasks:broker, app.background_tasks.tasks ]
-#    restart: always
-#
-#    depends_on:
-#      - db
-#      - rabbitmq
-#      - redis
-#
-#  taskiq-scheduler:
-#
-#    <<: *app
-#    container_name: taskiq-scheduler
-#    ports: [ ]
-#    command: [ taskiq, scheduler, app.background_tasks:scheduler, app.background_tasks.tasks]
-#    restart: always
-#
-#    depends_on:
-#      - db
-#      - rabbitmq
-#      - redis
-#
-#
-#
-#
-#  db:
-#    image: postgres:16
-#    container_name: psql
-#    restart: always
-#    volumes:
-#      - ./initdb/dump.sql:/docker-entrypoint-initdb.d/tables.sql:ro
-#      - /etc/localtime:/etc/localtime:ro
-#      - /etc/timezone:/etc/timezone:ro
-#    environment:
-#      - POSTGRES_USER=argus
-#      - POSTGRES_PASSWORD=1234
-#      - POSTGRES_DB=argusdb
-#      - TZ=Asia/Yekaterinburg
-#    ports:
-#      - "5432:5432"
-#
-#  nginx:
-#    container_name: nginx
-#    image: nginx:latest
-#    restart: always
-#    ports:
-#      - '80:80'
-#    volumes:
-#      - ./media:/var/www/argus/media:ro
-#      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-#
-#
-#  redis:
-#    image: redis:latest
-#    container_name: redis
-#    restart: always
-#    ports:
-#      - "6379:6379"
-#
-#  rabbitmq:
-#    image: rabbitmq:latest
-#    container_name: rabbitmq
-#    restart: always
-#    ports:
-#      - "5672:5672"
-#
-#volumes:
-#  shared_data:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./app/static:/var/www/hotel/static:ro
 

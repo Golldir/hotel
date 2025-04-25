@@ -1,8 +1,25 @@
+# Python
 .venv
-.idea
-.vscode
-.coverage
 __pycache__/
 */__pycache__/
 **/__pycache__/
 *.py[cod]
+.pytest_cache/
+.coverage
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Docker
+.docker/
+
+# Logs
+*.log
