@@ -1,10 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from hotel.models import Hotel
-
-from hotel.models import Room
-from tests.hotel.test_data import ROOM_DATA
+from hotel.models import Room, Hotel
+from tests.hotel.room_service.room_test_data import ROOM_DATA
 
 class TestRoomService:
     def test_get_rooms_success(self, room_service):
